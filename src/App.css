@@ -54,7 +54,8 @@ body {
 .wall-setup,
 .painting-upload,
 .wall-set-info,
-.paintings-list {
+.paintings-list,
+.project-manager {
   background: white;
   border-radius: 8px;
   padding: 1.25rem;
@@ -448,6 +449,166 @@ h3 {
 
 .draggable-painting:hover .painting-info {
   opacity: 1;
+}
+
+/* Project Manager */
+.project-manager .message {
+  padding: 0.5rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  margin-bottom: 0.75rem;
+  text-align: center;
+}
+
+.project-manager .message.success {
+  background: #d4edda;
+  color: #155724;
+}
+
+.project-manager .message.error {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.project-name-input {
+  margin-bottom: 0.75rem;
+}
+
+.project-name-input input {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 0.95rem;
+}
+
+.project-name-input input:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+.project-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.project-actions .btn {
+  flex: 1;
+  padding: 0.5rem;
+  font-size: 0.85rem;
+}
+
+.btn.outline-secondary {
+  background: transparent;
+  border: 1px solid #6c757d;
+  color: #6c757d;
+}
+
+.btn.outline-secondary:hover {
+  background: #6c757d;
+  color: white;
+}
+
+.btn.text {
+  background: transparent;
+  color: #3498db;
+  width: 100%;
+  padding: 0.5rem;
+  font-size: 0.85rem;
+}
+
+.btn.text:hover {
+  background: #f0f7ff;
+}
+
+.project-list {
+  margin-top: 1rem;
+  border-top: 1px solid #eee;
+  padding-top: 1rem;
+}
+
+.project-list h3 {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+.project-list .no-projects {
+  color: #999;
+  font-size: 0.85rem;
+  text-align: center;
+  padding: 1rem 0;
+}
+
+.project-list ul {
+  list-style: none;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.project-list li {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-bottom: 0.25rem;
+  transition: background 0.2s;
+}
+
+.project-list li:hover {
+  background: #f0f7ff;
+}
+
+.project-list li.active {
+  background: #e3f2fd;
+  border-left: 3px solid #3498db;
+}
+
+.project-list .project-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.project-list .project-name {
+  display: block;
+  font-weight: 500;
+  font-size: 0.875rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.project-list .project-date {
+  display: block;
+  font-size: 0.75rem;
+  color: #999;
+}
+
+.project-list .delete-btn {
+  width: 22px;
+  height: 22px;
+  background: transparent;
+  color: #999;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: all 0.2s;
+}
+
+.project-list li:hover .delete-btn {
+  opacity: 1;
+}
+
+.project-list .delete-btn:hover {
+  background: #e74c3c;
+  color: white;
 }
 
 /* Responsive */

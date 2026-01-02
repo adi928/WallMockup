@@ -2,11 +2,13 @@ import { useState } from 'react';
 import WallSetup from './components/WallSetup';
 import WallCanvas from './components/WallCanvas';
 import PaintingUpload from './components/PaintingUpload';
+import ProjectManager from './components/ProjectManager';
 
 function App() {
   const [wall, setWall] = useState(null);
   const [paintings, setPaintings] = useState([]);
   const [nextId, setNextId] = useState(1);
+  const [currentProjectId, setCurrentProjectId] = useState(null);
 
   const handleWallSet = (wallData) => {
     setWall(wallData);
@@ -39,6 +41,14 @@ function App() {
     setPaintings([]);
   };
 
+  const handleLoadProject = (loadedWall, loadedPaintings) => {
+    setWall(loadedWall);
+    setPaintings(loadedPaintings);
+    // Set nextId to be higher than any existing painting ID
+    const maxId = loadedPaintings.reduce((max, p) => Math.max(max, p.id), 0);
+    setNextId(maxId + 1);
+  };
+
   return (
     <div className="app">
       <header className="app-header">
@@ -48,6 +58,14 @@ function App() {
 
       <main className="app-main">
         <div className="sidebar">
+          <ProjectManager
+            wall={wall}
+            paintings={paintings}
+            onLoadProject={handleLoadProject}
+            currentProjectId={currentProjectId}
+            onProjectIdChange={setCurrentProjectId}
+          />
+
           {!wall ? (
             <WallSetup onWallSet={handleWallSet} />
           ) : (
