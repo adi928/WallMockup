@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 
 export const FRAME_STYLES = [
   { id: 'none', name: 'No Frame' },
@@ -39,8 +39,8 @@ export default function DraggablePainting({
     setIsDragging(true);
   };
 
-  const handleMouseMove = (e) => {
-    if (!isDragging) return;
+  const handleMouseMove = useCallback((e) => {
+    if (!elementRef.current) return;
 
     const parent = elementRef.current.parentElement;
     const parentRect = parent.getBoundingClientRect();
@@ -53,20 +53,24 @@ export default function DraggablePainting({
     newY = Math.max(0, Math.min(newY, parentRect.height - displayHeight));
 
     onPositionChange(painting.id, { x: newX, y: newY });
-  };
+  }, [dragOffset, displayWidth, displayHeight, onPositionChange, painting.id]);
 
-  const handleMouseUp = () => {
+  const handleMouseUp = useCallback(() => {
     setIsDragging(false);
-  };
+  }, []);
 
-  // Attach global listeners when dragging
-  if (isDragging) {
-    document.onmousemove = handleMouseMove;
-    document.onmouseup = handleMouseUp;
-  } else {
-    document.onmousemove = null;
-    document.onmouseup = null;
-  }
+  // Attach global listeners only when this painting is dragging
+  useEffect(() => {
+    if (isDragging) {
+      document.addEventListener('mousemove', handleMouseMove);
+      document.addEventListener('mouseup', handleMouseUp);
+
+      return () => {
+        document.removeEventListener('mousemove', handleMouseMove);
+        document.removeEventListener('mouseup', handleMouseUp);
+      };
+    }
+  }, [isDragging, handleMouseMove, handleMouseUp]);
 
   const handleFrameSelect = (e, styleId) => {
     e.stopPropagation();
