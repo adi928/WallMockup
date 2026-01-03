@@ -36,6 +36,12 @@ function App() {
     setPaintings(paintings.filter(p => p.id !== id));
   };
 
+  const handleFrameChange = (id, frameStyle) => {
+    setPaintings(paintings.map(p =>
+      p.id === id ? { ...p, frameStyle } : p
+    ));
+  };
+
   const handleReset = () => {
     setWall(null);
     setPaintings([]);
@@ -110,6 +116,7 @@ function App() {
             paintings={paintings}
             onPaintingPositionChange={handlePositionChange}
             onRemovePainting={handleRemovePainting}
+            onFrameChange={handleFrameChange}
           />
         </div>
       </main>

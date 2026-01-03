@@ -382,22 +382,26 @@ h3 {
 
 /* Draggable Painting */
 .draggable-painting {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  border: 3px solid white;
   transition: box-shadow 0.2s;
   user-select: none;
 }
 
 .draggable-painting:hover {
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+  z-index: 100;
 }
 
 .draggable-painting.dragging {
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
   z-index: 1000;
 }
 
-.draggable-painting img {
+.draggable-painting .painting-frame {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.draggable-painting .painting-frame img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -422,14 +426,41 @@ h3 {
   justify-content: center;
   opacity: 0;
   transition: opacity 0.2s;
+  z-index: 10;
 }
 
-.draggable-painting:hover .remove-btn {
+.draggable-painting .frame-btn {
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  width: 24px;
+  height: 24px;
+  background: #3498db;
+  color: white;
+  border: 2px solid white;
+  border-radius: 50%;
+  font-size: 12px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.2s;
+  z-index: 10;
+}
+
+.draggable-painting:hover .remove-btn,
+.draggable-painting:hover .frame-btn {
   opacity: 1;
 }
 
 .draggable-painting .remove-btn:hover {
   background: #c0392b;
+}
+
+.draggable-painting .frame-btn:hover {
+  background: #2980b9;
 }
 
 .draggable-painting .painting-info {
@@ -445,10 +476,215 @@ h3 {
   white-space: nowrap;
   opacity: 0;
   transition: opacity 0.2s;
+  z-index: 10;
 }
 
 .draggable-painting:hover .painting-info {
   opacity: 1;
+}
+
+/* Frame Picker */
+.frame-picker {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  padding: 0.5rem;
+  z-index: 1000;
+  min-width: 140px;
+  margin-top: 8px;
+}
+
+.frame-option {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.4rem 0.5rem;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background 0.2s;
+  text-align: left;
+}
+
+.frame-option:hover {
+  background: #f0f0f0;
+}
+
+.frame-option.active {
+  background: #e3f2fd;
+}
+
+.frame-option .frame-name {
+  font-size: 0.8rem;
+  color: #333;
+}
+
+/* Frame Previews */
+.frame-preview {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.frame-preview.frame-none {
+  background: #f0f0f0;
+  border: 1px dashed #ccc;
+}
+
+.frame-preview.frame-modern-black {
+  background: #1a1a1a;
+  border: 2px solid #000;
+}
+
+.frame-preview.frame-modern-white {
+  background: #fff;
+  border: 2px solid #e0e0e0;
+}
+
+.frame-preview.frame-classic-gold {
+  background: linear-gradient(135deg, #d4af37 0%, #f4e4a6 50%, #d4af37 100%);
+  border: 2px solid #b8860b;
+}
+
+.frame-preview.frame-classic-silver {
+  background: linear-gradient(135deg, #c0c0c0 0%, #e8e8e8 50%, #c0c0c0 100%);
+  border: 2px solid #a0a0a0;
+}
+
+.frame-preview.frame-rustic-wood {
+  background: linear-gradient(135deg, #8b4513 0%, #a0522d 50%, #8b4513 100%);
+  border: 2px solid #654321;
+}
+
+.frame-preview.frame-dark-wood {
+  background: linear-gradient(135deg, #3e2723 0%, #5d4037 50%, #3e2723 100%);
+  border: 2px solid #1b0f0a;
+}
+
+.frame-preview.frame-gallery-float {
+  background: #fff;
+  border: 1px solid #ddd;
+  box-shadow: inset 0 0 0 3px #f5f5f5;
+}
+
+/* Frame Styles for Paintings */
+.draggable-painting.frame-none .painting-frame {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.draggable-painting.frame-modern-black .painting-frame {
+  border: 4px solid #1a1a1a;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.draggable-painting.frame-modern-white .painting-frame {
+  border: 4px solid #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.draggable-painting.frame-classic-gold .painting-frame {
+  border: 8px solid;
+  border-image: linear-gradient(135deg, #d4af37 0%, #f4e4a6 25%, #d4af37 50%, #f4e4a6 75%, #d4af37 100%) 1;
+  box-shadow:
+    inset 0 0 0 2px #b8860b,
+    0 6px 16px rgba(0, 0, 0, 0.4);
+}
+
+.draggable-painting.frame-classic-silver .painting-frame {
+  border: 8px solid;
+  border-image: linear-gradient(135deg, #c0c0c0 0%, #e8e8e8 25%, #c0c0c0 50%, #e8e8e8 75%, #c0c0c0 100%) 1;
+  box-shadow:
+    inset 0 0 0 2px #a0a0a0,
+    0 6px 16px rgba(0, 0, 0, 0.4);
+}
+
+.draggable-painting.frame-rustic-wood .painting-frame {
+  border: 10px solid;
+  border-image: linear-gradient(
+    180deg,
+    #8b4513 0%, #a0522d 10%, #8b4513 20%,
+    #a0522d 30%, #8b4513 40%, #a0522d 50%,
+    #8b4513 60%, #a0522d 70%, #8b4513 80%,
+    #a0522d 90%, #8b4513 100%
+  ) 1;
+  box-shadow:
+    inset 0 0 0 2px #654321,
+    0 6px 16px rgba(0, 0, 0, 0.5);
+}
+
+.draggable-painting.frame-dark-wood .painting-frame {
+  border: 10px solid;
+  border-image: linear-gradient(
+    180deg,
+    #3e2723 0%, #5d4037 10%, #3e2723 20%,
+    #5d4037 30%, #3e2723 40%, #5d4037 50%,
+    #3e2723 60%, #5d4037 70%, #3e2723 80%,
+    #5d4037 90%, #3e2723 100%
+  ) 1;
+  box-shadow:
+    inset 0 0 0 2px #1b0f0a,
+    0 6px 16px rgba(0, 0, 0, 0.5);
+}
+
+.draggable-painting.frame-gallery-float .painting-frame {
+  border: 3px solid #fff;
+  box-shadow:
+    0 0 0 1px #e0e0e0,
+    0 8px 24px rgba(0, 0, 0, 0.3);
+  margin: 6px;
+}
+
+.draggable-painting.frame-gallery-float {
+  background: white;
+  padding: 6px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+/* Frame Style Selector in Upload Form */
+.frame-style-selector {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.frame-style-option {
+  width: 32px;
+  height: 32px;
+  padding: 4px;
+  border: 2px solid #ddd;
+  border-radius: 4px;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.frame-style-option:hover {
+  border-color: #3498db;
+}
+
+.frame-style-option.active {
+  border-color: #3498db;
+  background: #e3f2fd;
+}
+
+.frame-style-option:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.frame-style-option .frame-preview {
+  width: 100%;
+  height: 100%;
 }
 
 /* Project Manager */

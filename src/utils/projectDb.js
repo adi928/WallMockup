@@ -144,7 +144,8 @@ export async function serializeProject(name, wall, paintings) {
       imageData: await imageUrlToBase64(painting.imageUrl),
       widthInches: painting.widthInches,
       heightInches: painting.heightInches,
-      position: painting.position
+      position: painting.position,
+      frameStyle: painting.frameStyle || 'none'
     });
   }
 
@@ -175,7 +176,8 @@ export function deserializeProject(data) {
     imageUrl: p.imageData,
     widthInches: p.widthInches,
     heightInches: p.heightInches,
-    position: p.position
+    position: p.position,
+    frameStyle: p.frameStyle || 'none'
   }));
 
   return result;

@@ -6,7 +6,8 @@ export default function WallCanvas({
   wall,
   paintings,
   onPaintingPositionChange,
-  onRemovePainting
+  onRemovePainting,
+  onFrameChange
 }) {
   const containerRef = useRef(null);
   const scrollRef = useRef(null);
@@ -125,6 +126,7 @@ export default function WallCanvas({
               pixelsPerInch={pixelsPerInch}
               onPositionChange={onPaintingPositionChange}
               onRemove={onRemovePainting}
+              onFrameChange={onFrameChange}
             />
           ))}
         </div>

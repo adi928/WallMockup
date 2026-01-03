@@ -1,17 +1,31 @@
 import { useState, useRef } from 'react';
 
+export const FRAME_STYLES = [
+  { id: 'none', name: 'No Frame' },
+  { id: 'modern-black', name: 'Modern Black' },
+  { id: 'modern-white', name: 'Modern White' },
+  { id: 'classic-gold', name: 'Classic Gold' },
+  { id: 'classic-silver', name: 'Classic Silver' },
+  { id: 'rustic-wood', name: 'Rustic Wood' },
+  { id: 'dark-wood', name: 'Dark Wood' },
+  { id: 'gallery-float', name: 'Gallery Float' }
+];
+
 export default function DraggablePainting({
   painting,
   pixelsPerInch,
   onPositionChange,
-  onRemove
+  onRemove,
+  onFrameChange
 }) {
   const [isDragging, setIsDragging] = useState(false);
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
+  const [showFramePicker, setShowFramePicker] = useState(false);
   const elementRef = useRef(null);
 
   const displayWidth = painting.widthInches * pixelsPerInch;
   const displayHeight = painting.heightInches * pixelsPerInch;
+  const frameStyle = painting.frameStyle || 'none';
 
   const handleMouseDown = (e) => {
     if (e.button !== 0) return;
@@ -54,10 +68,21 @@ export default function DraggablePainting({
     document.onmouseup = null;
   }
 
+  const handleFrameSelect = (e, styleId) => {
+    e.stopPropagation();
+    onFrameChange(painting.id, styleId);
+    setShowFramePicker(false);
+  };
+
+  const toggleFramePicker = (e) => {
+    e.stopPropagation();
+    setShowFramePicker(!showFramePicker);
+  };
+
   return (
     <div
       ref={elementRef}
-      className={`draggable-painting ${isDragging ? 'dragging' : ''}`}
+      className={`draggable-painting frame-${frameStyle} ${isDragging ? 'dragging' : ''}`}
       style={{
         position: 'absolute',
         left: painting.position.x,
@@ -68,11 +93,13 @@ export default function DraggablePainting({
       }}
       onMouseDown={handleMouseDown}
     >
-      <img
-        src={painting.imageUrl}
-        alt={`Painting ${painting.id}`}
-        draggable={false}
-      />
+      <div className="painting-frame">
+        <img
+          src={painting.imageUrl}
+          alt={`Painting ${painting.id}`}
+          draggable={false}
+        />
+      </div>
       <button
         className="remove-btn"
         onClick={(e) => {
@@ -83,6 +110,27 @@ export default function DraggablePainting({
       >
         &times;
       </button>
+      <button
+        className="frame-btn"
+        onClick={toggleFramePicker}
+        title="Change frame"
+      >
+        ⬜
+      </button>
+      {showFramePicker && (
+        <div className="frame-picker">
+          {FRAME_STYLES.map(style => (
+            <button
+              key={style.id}
+              className={`frame-option ${frameStyle === style.id ? 'active' : ''}`}
+              onClick={(e) => handleFrameSelect(e, style.id)}
+            >
+              <span className={`frame-preview frame-${style.id}`}></span>
+              <span className="frame-name">{style.name}</span>
+            </button>
+          ))}
+        </div>
+      )}
       <div className="painting-info">
         {painting.widthInches}" x {painting.heightInches}"
       </div>

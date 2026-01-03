@@ -1,10 +1,12 @@
 import { useState } from 'react';
+import { FRAME_STYLES } from './DraggablePainting';
 
 export default function PaintingUpload({ onAddPainting, disabled }) {
   const [paintingImage, setPaintingImage] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
   const [width, setWidth] = useState('');
   const [height, setHeight] = useState('');
+  const [frameStyle, setFrameStyle] = useState('modern-black');
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -25,7 +27,8 @@ export default function PaintingUpload({ onAddPainting, disabled }) {
     onAddPainting({
       imageUrl: previewUrl,
       widthInches: parseFloat(width),
-      heightInches: parseFloat(height)
+      heightInches: parseFloat(height),
+      frameStyle
     });
 
     // Reset form
@@ -33,6 +36,7 @@ export default function PaintingUpload({ onAddPainting, disabled }) {
     setPreviewUrl(null);
     setWidth('');
     setHeight('');
+    setFrameStyle('modern-black');
 
     // Reset file input
     const fileInput = document.getElementById('painting-image');
@@ -91,6 +95,24 @@ export default function PaintingUpload({ onAddPainting, disabled }) {
               placeholder="e.g., 36"
               disabled={disabled}
             />
+          </div>
+        </div>
+
+        <div className="form-group">
+          <label>Frame Style</label>
+          <div className="frame-style-selector">
+            {FRAME_STYLES.map(style => (
+              <button
+                key={style.id}
+                type="button"
+                className={`frame-style-option ${frameStyle === style.id ? 'active' : ''}`}
+                onClick={() => setFrameStyle(style.id)}
+                disabled={disabled}
+                title={style.name}
+              >
+                <span className={`frame-preview frame-${style.id}`}></span>
+              </button>
+            ))}
           </div>
         </div>
 
