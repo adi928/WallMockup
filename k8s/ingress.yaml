@@ -1,0 +1,29 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: wall-mockup
+  labels:
+    app: wall-mockup
+  annotations:
+    # Uncomment for nginx ingress controller
+    # nginx.ingress.kubernetes.io/rewrite-target: /
+    # Uncomment for TLS with cert-manager
+    # cert-manager.io/cluster-issuer: letsencrypt-prod
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: wall-mockup.example.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: wall-mockup
+            port:
+              number: 80
+  # Uncomment for TLS
+  # tls:
+  # - hosts:
+  #   - wall-mockup.example.com
+  #   secretName: wall-mockup-tls

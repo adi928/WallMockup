@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wall-mockup
+  labels:
+    app: wall-mockup
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: wall-mockup
+  template:
+    metadata:
+      labels:
+        app: wall-mockup
+    spec:
+      containers:
+      - name: wall-mockup
+        image: ghcr.io/adi928/wallmockup:latest
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            memory: "32Mi"
+            cpu: "10m"
+          limits:
+            memory: "64Mi"
+            cpu: "100m"
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 3
+          periodSeconds: 5
