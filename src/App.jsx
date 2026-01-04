@@ -95,7 +95,7 @@ function App() {
               <ul>
                 {paintings.map(p => (
                   <li key={p.id}>
-                    <span>Painting #{p.id}</span>
+                    <img src={p.imageUrl} alt={`Painting ${p.id}`} className="painting-thumb" />
                     <span className="dims">{p.widthInches}" x {p.heightInches}"</span>
                     <button
                       className="remove-small"
