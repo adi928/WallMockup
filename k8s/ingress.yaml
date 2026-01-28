@@ -7,9 +7,7 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: "gce"
     kubernetes.io/ingress.global-static-ip-name: "wall-mockup-ip"
-    networking.gke.io/managed-certificates: "wall-mockup-cert"
-    # Uncomment to redirect HTTP to HTTPS (enable after cert is active)
-    # kubernetes.io/ingress.allow-http: "false"
+    # SSL is handled by Cloudflare (set SSL mode to "Flexible" in Cloudflare dashboard)
 spec:
   defaultBackend:
     service:
